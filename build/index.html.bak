@@ -44,7 +44,7 @@ color:white;
 	</div>
 	<br>
 
-	<input type="text" id="name" placeholder="Введите имя" autofocus >
+	<input type="text" id="name" placeholder="Введите имя">
 	<button id="create">Создать</button>
 	<button id="copy">Копировать</button>
 	</div>
@@ -52,7 +52,9 @@ color:white;
 </div>
 
 <script>
-
+	body.onload = function(){
+		document.getElementById("name").focus();
+	}
 	function getDataUrl(img) {
 	   // Create canvas
 	   const canvas = document.createElement('canvas');
