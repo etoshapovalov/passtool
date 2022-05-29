@@ -1,0 +1,117 @@
+<html>
+<head>
+<style>
+.pixelated {
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+
+}
+.wrapper {
+	display: flex;
+	justify-content:center;
+	align-items:center;
+	height:100%;
+	flex-direction:column;
+}
+#avatar {
+font-stretch: ultra-expanded;
+}
+body {
+	background-color:#195f91;
+
+}
+*{
+	margin:0;
+}
+h1,h5 {
+margin-bottom:10px;
+color:white;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+	<h1>PassTool v 1.0</h1>
+	<h5>Copyright (c) AndrewRest, 2022</h5>
+	<div style="background-color:rgba(255,255,255,0.5); padding:15px; border-radius:20px;">
+	<div style="display:flex;">
+	<div style="display:flex; flex-direction:column;">
+	<img id="preview" style="height: 100px; width: 100px; margin-right:50px; border-radius:5px; user-select:none; margin-bottom:20px;" class="pixelated" src="img/no-avatar.png"></img>
+	<span style="font-size:100%; width:100%;" id="nick"></span>
+	</div>
+	<pre id="avatar" name="avatar" style="padding:10px; margin:0; height: 150px; width: 243px; resize: none; color:lime; background-color:#000;"></pre> 
+	</div>
+	<br>
+
+	<input type="text" id="name" placeholder="Введите имя">
+	<button id="create">Создать</button>
+	<button id="copy">Копировать</button>
+	</div>
+	<span style="margin-top:10px; color:white;">Специально для #СП.</span>
+</div>
+
+<script>
+	function getDataUrl(img) {
+	   // Create canvas
+	   const canvas = document.createElement('canvas');
+	   const ctx = canvas.getContext('2d');
+	   // Set width and height
+	   canvas.width = img.width;
+	   canvas.height = img.height;
+	   // Draw the image
+	   ctx.drawImage(img, 0, 0);
+	   return ctx.getImageData(0,0,8,8);
+	}
+	document.getElementById("copy").onclick = function(){
+		let text = document.getElementById("avatar").innerText;
+		if(text != ""){
+				navigator.clipboard.writeText(text);
+		alert("Скопировано в буфер обмена!");
+		}
+		
+	}
+	document.getElementById("create").onclick = function(){
+	
+		let name = document.getElementById("name").value;
+		document.getElementById("nick").innerText = name;
+		let url = "https://minotar.net/avatar/"+name+"/8";
+		var img = new Image();
+		img.setAttribute('crossorigin', 'anonymous');
+		img.src = url;
+		img.onload = function(){
+			document.getElementById("preview").src = img.src;
+			let avatar = document.getElementById("avatar");
+			avatar.innerText = "\n";
+			let imageData = getDataUrl(img);
+			
+			let offset = 0;
+			
+			for(let y = 0; y < 8; y++){
+				for(let x = 0; x < 8; x++){
+					let r = imageData.data[offset];
+					let g = imageData.data[offset+1];
+					let b = imageData.data[offset+2];
+					
+					let lightness = (r+g+b)/3;
+					let symbols = ['░','▒','▓','█']
+	
+					if(lightness <= 63){
+						avatar.innerText += symbols[3];
+					} else if (lightness <= 63*2){
+						avatar.innerText += symbols[2];
+					} else if (lightness <= 63*4){
+						avatar.innerText += symbols[1];
+					} else {
+						avatar.innerText += symbols[0];
+					}
+					
+					offset+=4;
+				}
+				avatar.innerText += "\n";
+			}
+		}
+	}
+</script>
+</body>
+</html>
