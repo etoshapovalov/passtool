@@ -39,14 +39,19 @@ color:white;
 	<div style="display:flex; flex-direction:column;">
 	<img id="preview" style="height: 100px; width: 100px; margin-right:50px; border-radius:5px; user-select:none; margin-bottom:20px;" class="pixelated" src="img/no-avatar.png"></img>
 	<span style="font-size:100%; width:100%;" id="nick"></span>
+
 	</div>
 	<pre id="avatar" name="avatar" style="padding:10px; margin:0; height: 150px; width: 243px; resize: none; color:lime; background-color:#000;"></pre> 
+
 	</div>
 	<br>
 
-	<input type="text" id="name" placeholder="Введите имя" autofocus autoComplete='off'>
+	<input type="text" id="name" placeholder="Введите имя" autofocus autoComplete='none'>
 	<button id="create">Создать</button>
-	<button id="copy">Копировать</button>
+	<button id="copy">Копировать</button><br/><br/>
+			      <input type="checkbox" id="helm" name="layer"
+             checked> 
+			 <label for="layer" title="Отключение второго слоя помогает получить более ясную картинку в случаях, когда второй слой (волосы, очки) перекрывает лицо.">Использовать второй слой</label>
 	</div>
 	<span style="margin-top:10px; color:white;">Специально для #СП.</span>
 </div>
@@ -83,7 +88,7 @@ color:white;
 	
 		let name = document.getElementById("name").value;
 		document.getElementById("nick").innerText = name;
-		let url = "https://minotar.net/avatar/"+name+"/8";
+		let url = "https://minotar.net/"+(document.getElementById("helm").checked?"helm":"avatar")+"/"+name+"/8";
 		var img = new Image();
 		img.setAttribute('crossorigin', 'anonymous');
 		img.src = url;
